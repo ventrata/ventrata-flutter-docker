@@ -6,11 +6,16 @@ ARG DANGER_VERSION=6.3.1
 ENV ANDROID_HOME /android_sdk
 ENV ANDROID_NDK_HOME ${ANDROID_HOME}/ndk
 
-RUN apt-get update && \
-	apt-get install -y git curl unzip lib32stdc++6 android-sdk xz-utils make ruby && \
-	apt-get clean && \
-	&& rm -rf /var/lib/apt/lists/* && \
-	gem install bundler danger:${DANGER_VERSION} --no-document
+RUN apt-get update && apt-get install -y \
+	android-sdk \
+	curl \
+	git \
+	lib32stdc++6 \
+	make \
+	ruby && \
+	unzip \
+	xz-utils \
+&& rm -rf /var/lib/apt/lists/*
 
 # Flutter
 RUN curl https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz --output /flutter.tar.xz && \
@@ -24,7 +29,9 @@ RUN curl https://storage.googleapis.com/flutter_infra/releases/stable/linux/flut
 	curl https://dl.google.com/android/repository/android-ndk-r21-darwin-x86_64.zip --output android-ndk.zip && \
 	unzip -qq -o android-ndk.zip -d $ANDROID_NDK_HOME && \
 	mv $ANDROID_NDK_HOME/android-ndk-r21/* $ANDROID_NDK_HOME && \
-	rm android-ndk.zip
+	rm android-ndk.zip && \
+# Danger
+	gem install bundler danger:${DANGER_VERSION} --no-document
 
 ENV PATH $PATH:/flutter/bin:/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/tools:/blackbox/bin
 
