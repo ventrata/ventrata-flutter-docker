@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
 	git \
 	lib32stdc++6 \
 	make \
-	ruby && \
+	ruby \
 	unzip \
 	xz-utils \
 && rm -rf /var/lib/apt/lists/*
