@@ -1,23 +1,27 @@
 FROM openjdk:8
 
-ARG VERSION=v1.12.13+hotfix.8
+ARG FLUTTER_VERSION=v1.12.13+hotfix.8
+ARG DANGER_VERSION=6.3.1
 
 ENV ANDROID_HOME /android_sdk
 ENV ANDROID_NDK_HOME ${ANDROID_HOME}/ndk
 
 RUN apt-get update && \
-	apt-get install -y git curl unzip lib32stdc++6 android-sdk xz-utils make && \
-	apt-get clean
+	apt-get install -y git curl unzip lib32stdc++6 android-sdk xz-utils make ruby && \
+	apt-get clean && \
+	&& rm -rf /var/lib/apt/lists/* && \
+	gem install bundler danger:${DANGER_VERSION} --no-document
 
-RUN curl https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_${VERSION}-stable.tar.xz --output /flutter.tar.xz && \
+# Flutter
+RUN curl https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz --output /flutter.tar.xz && \
 	tar xf flutter.tar.xz && \
-	rm flutter.tar.xz
-
-RUN curl https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip --output android-sdk-tools.zip && \
+	rm flutter.tar.xz && \
+# Android SDK tools
+	curl https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip --output android-sdk-tools.zip && \
 	unzip -qq android-sdk-tools.zip -d $ANDROID_HOME && \
-	rm android-sdk-tools.zip
-
-RUN curl https://dl.google.com/android/repository/android-ndk-r21-darwin-x86_64.zip --output android-ndk.zip && \
+	rm android-sdk-tools.zip && \
+# Android NDK
+	curl https://dl.google.com/android/repository/android-ndk-r21-darwin-x86_64.zip --output android-ndk.zip && \
 	unzip -qq -o android-ndk.zip -d $ANDROID_NDK_HOME && \
 	mv $ANDROID_NDK_HOME/android-ndk-r21/* $ANDROID_NDK_HOME && \
 	rm android-ndk.zip
