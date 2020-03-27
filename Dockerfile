@@ -2,7 +2,7 @@ FROM openjdk:8
 
 ARG FLUTTER_VERSION=v1.12.13+hotfix.8
 ARG DANGER_VERSION=6.3.1
-ARG ANDROID_API_LEVEL=29
+ARG ANDROID_API_LEVEL=28
 
 ENV ANDROID_HOME /android-sdk
 # ENV ANDROID_NDK_HOME ${ANDROID_HOME}/ndk
@@ -34,7 +34,7 @@ RUN curl https://storage.googleapis.com/flutter_infra/releases/stable/linux/flut
 ENV PATH $PATH:/flutter/bin:/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/blackbox/bin
 
 RUN yes | sdkmanager --licenses && \
-	sdkmanager --sdk_root=${ANDROID_HOME} "platform-tools" "build-tools;28.0.3" "platforms;android-${ANDROID_API_LEVEL}"
+	sdkmanager "platform-tools" "build-tools;28.0.3" "platforms;android-${ANDROID_API_LEVEL}"
 
 RUN flutter config --no-analytics && \
 	flutter precache --no-ios && \
