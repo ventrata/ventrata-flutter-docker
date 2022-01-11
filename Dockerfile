@@ -1,41 +1,44 @@
-FROM openjdk:8
+FROM gcr.io/cloud-builders/javac:8
 
-ARG FLUTTER_VERSION=1.17.1
-ARG DANGER_VERSION=6.3.1
+ARG FLUTTER_VERSION=2.8.1
 ARG ANDROID_API_LEVEL=29
+ARG GRADLE_VERSION=6.9.2
 
 ENV ANDROID_HOME /android-sdk
+ENV GRADLE_HOME /opt/gradle/gradle-${GRADLE_VERSION}
 
-VOLUME [ "/xcode-sdk" ]
+# Set timezone to UTC by default
+RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
-RUN apt-get update && apt-get install -y \
-	curl \
-	git \
-	make \
-	ruby \
-	unzip \
-&& rm -rf /var/lib/apt/lists/*
+# Use unicode
+RUN locale-gen C.UTF-8 || true
+ENV LANG=C.UTF-8
+
+# Install Dependencies
+RUN apt-get update && \
+    apt-get install -y \
+        git locales sudo openssh-client ca-certificates tar gzip parallel \
+        zip unzip bzip2 gnupg curl wget
 
 # Flutter
-RUN curl https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz -o /flutter.tar.xz && \
+RUN curl https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz -o /flutter.tar.xz && \
 	tar xf flutter.tar.xz && \
 	rm flutter.tar.xz && \
 # Android SDK tools
 	curl https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -o android-sdk-tools.zip && \
 	unzip -qq android-sdk-tools.zip -d $ANDROID_HOME && \
 	rm android-sdk-tools.zip && \
-# AWS CLI
-	curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip && \
-	unzip -qq awscliv2.zip && \
-	./aws/install && \
-# Danger
-	gem install bundler danger danger-changelog danger-jira --no-document
+# Gradle
+	wget "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" && \
+	unzip -qq gradle-*.zip -d /opt/gradle
+	
 
-ENV PATH $PATH:/flutter/bin:/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/blackbox/bin
+ENV PATH $PATH:$GRADLE_HOME/bin:/flutter/bin:/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/blackbox/bin
 
 RUN yes | sdkmanager --licenses && \
 	sdkmanager "platform-tools" "build-tools;28.0.3" "platforms;android-${ANDROID_API_LEVEL}" && \
 	flutter config --no-analytics && \
 	flutter precache --no-ios && \
-	flutter doctor && \
-	aws --version
+	flutter doctor
+
+ENTRYPOINT [ "bash" ]
