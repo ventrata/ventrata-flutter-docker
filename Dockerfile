@@ -36,7 +36,7 @@ RUN curl https://storage.googleapis.com/flutter_infra_release/releases/stable/li
 ENV PATH $PATH:$GRADLE_HOME/bin:/flutter/bin:/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/blackbox/bin
 
 RUN yes | sdkmanager --licenses && \
-	sdkmanager "platform-tools" "build-tools;28.0.3" "platforms;android-${ANDROID_API_LEVEL}" && \
+	sdkmanager "cmdline-tools;latest" "platform-tools" "build-tools;28.0.3" "platforms;android-${ANDROID_API_LEVEL}" && \
 	flutter config --no-analytics && \
 	flutter precache --no-ios && \
 	flutter doctor
