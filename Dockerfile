@@ -33,7 +33,7 @@ RUN curl https://storage.googleapis.com/flutter_infra_release/releases/stable/li
 	unzip -qq gradle-*.zip -d /opt/gradle && \
 	rm gradle-*.zip
 
-ENV PATH $PATH:$GRADLE_HOME/bin:/flutter/bin:/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/blackbox/bin
+ENV PATH $PATH:$GRADLE_HOME/bin:/flutter/bin:/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/blackbox/bin
 
 RUN yes | sdkmanager --licenses && \
 	sdkmanager "cmdline-tools;latest" "platform-tools" "build-tools;28.0.3" "platforms;android-${ANDROID_API_LEVEL}" && \
