@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-builders/javac:8
+FROM openjdk:11
 
 ARG FLUTTER_VERSION=2.8.1
 ARG ANDROID_API_LEVEL=29
@@ -40,3 +40,5 @@ RUN yes | sdkmanager --licenses && \
 	flutter config --no-analytics && \
 	flutter precache --no-ios && \
 	flutter doctor
+
+ENTRYPOINT [ "/bin/bash" ]
