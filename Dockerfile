@@ -30,7 +30,7 @@ RUN curl https://storage.googleapis.com/flutter_infra_release/releases/stable/li
 	rm android-sdk-tools.zip && \
 # Gradle
 	wget "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" && \
-	unzip -qq gradle-*.zip -d /opt/gradle \
+	unzip -qq gradle-*.zip -d /opt/gradle && \
 	rm gradle-*.zip
 
 ENV PATH $PATH:$GRADLE_HOME/bin:/flutter/bin:/flutter/bin/cache/dart-sdk/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/blackbox/bin
