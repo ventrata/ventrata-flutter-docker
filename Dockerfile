@@ -36,8 +36,12 @@ RUN yes | sdkmanager --licenses
 RUN yes | sdkmanager "emulator" "platform-tools"
 RUN yes | sdkmanager --update --channel=0
 RUN yes | sdkmanager \
+    "platforms;android-31" \
     "platforms;android-30" \
+    "platforms;android-29" \
+    "platforms;android-28" \
     "build-tools;30.0.3" \
+    "build-tools;28.0.3" \
     "system-images;android-30;google_apis;x86"
 
 # Install Gradle
