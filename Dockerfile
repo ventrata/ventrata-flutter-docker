@@ -1,8 +1,8 @@
 FROM openjdk:11
 
-ARG FLUTTER_VERSION=2.8.1
-ARG ANDROID_API_LEVEL=30
-ARG GRADLE_VERSION=7.3.3
+ARG FLUTTER_VERSION=2.10.3
+ARG ANDROID_API_LEVEL=31
+ARG GRADLE_VERSION=6.7.1
 
 ENV ANDROID_HOME /android-sdk
 ENV ANDROID_SDK_ROOT /android-sdk
@@ -33,16 +33,13 @@ ENV PATH ${PATH}:${ANDROID_SDK_ROOT}/platform-tools:${ANDROID_SDK_ROOT}/cmdline-
 
 # Install Android SDKs
 RUN yes | sdkmanager --licenses
-RUN yes | sdkmanager "emulator" "platform-tools"
+# RUN yes | sdkmanager "emulator"
+RUN yes | sdkmanager "platform-tools"
 RUN yes | sdkmanager --update --channel=0
 RUN yes | sdkmanager \
     "platforms;android-31" \
-    "platforms;android-30" \
-    "platforms;android-29" \
-    "platforms;android-28" \
-    "build-tools;30.0.3" \
-    "build-tools;28.0.3" \
-    "system-images;android-30;google_apis;x86"
+    "build-tools;29.0.2" \
+    "android-30;google_apis;x86"
 
 # Install Gradle
 ENV PATH=$PATH:"/opt/gradle/gradle-${GRADLE_VERSION}/bin"
