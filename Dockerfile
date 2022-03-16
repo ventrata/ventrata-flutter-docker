@@ -38,8 +38,7 @@ RUN yes | sdkmanager "platform-tools"
 RUN yes | sdkmanager --update --channel=0
 RUN yes | sdkmanager \
     "platforms;android-31" \
-    "build-tools;29.0.2" \
-    "android-30;google_apis;x86"
+    "build-tools;29.0.2"
 
 # Install Gradle
 ENV PATH=$PATH:"/opt/gradle/gradle-${GRADLE_VERSION}/bin"
