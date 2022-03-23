@@ -1,13 +1,11 @@
 FROM openjdk:11
 
-ARG FLUTTER_VERSION=2.10.3
 ARG ANDROID_API_LEVEL=31
 ARG GRADLE_VERSION=6.7
 
 ENV ANDROID_HOME /android-sdk
 ENV ANDROID_SDK_ROOT /android-sdk
 ENV GRADLE_HOME /opt/gradle/gradle-${GRADLE_VERSION}
-ENV FLUTTER_HOME=/flutter
 
 # Set timezone to UTC by default
 RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
@@ -47,11 +45,5 @@ RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.
     && chmod +775 /opt/gradle \
     && gradle --version \
     && rm -rf /tmp/gradle*
-
-# Install Flutter
-ENV PATH=${PATH}:${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin
-RUN git clone --depth 1 --branch ${FLUTTER_VERSION} https://github.com/flutter/flutter.git ${FLUTTER_HOME}
-RUN yes | flutter doctor --android-licenses \
-    && flutter doctor
 
 ENTRYPOINT [ "/bin/bash" ]
