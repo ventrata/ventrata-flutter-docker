@@ -35,7 +35,7 @@ RUN yes | sdkmanager --licenses
 RUN yes | sdkmanager "platform-tools"
 RUN yes | sdkmanager --update --channel=0
 RUN yes | sdkmanager \
-    "platforms;android-31" \
+    "platforms;android-${ANDROID_API_LEVEL}" \
     "build-tools;29.0.2"
 
 # Install Gradle
