@@ -1,6 +1,6 @@
 FROM gcr.io/ventrata-flutter/android:latest
 
-ARG FLUTTER_VERSION=3.0.1
+ARG FLUTTER_VERSION=2.10.5
 
 ENV FLUTTER_HOME=/flutter
 
