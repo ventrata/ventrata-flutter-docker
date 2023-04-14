@@ -1,7 +1,7 @@
 FROM openjdk:11
 
-ARG ANDROID_API_LEVEL=31
-ARG GRADLE_VERSION=6.7
+ARG ANDROID_API_LEVEL=33
+ARG GRADLE_VERSION=7.5
 
 ENV ANDROID_HOME /android-sdk
 ENV ANDROID_SDK_ROOT /android-sdk
@@ -36,7 +36,7 @@ RUN yes | sdkmanager "platform-tools"
 RUN yes | sdkmanager --update --channel=0
 RUN yes | sdkmanager \
     "platforms;android-${ANDROID_API_LEVEL}" \
-    "build-tools;29.0.2"
+    "build-tools;33.0.1"
 
 # Install Gradle
 ENV PATH=$PATH:"/opt/gradle/gradle-${GRADLE_VERSION}/bin"
